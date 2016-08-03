@@ -1,0 +1,23 @@
+# Development
+alias godev='cd ~/Projects'
+
+# Restart camera
+alias killcam='sudo killall AppleCameraAssistant && sudo killall VDCAssistant'
+
+# Don't keep VLC  history
+defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
+defaults write org.videolan.vlc NSRecentDocumentsLimit 0
+defaults write org.videolan.vlc.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
+
+# Don't keep QuickTime history
+defaults delete com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments
+defaults write com.apple.QuickTimePlayerX NSRecentDocumentsLimit 0
+defaults write com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
+
+# Show/hide system files
+alias showsysfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+# airport
+alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+alias airport-bssid="/Applications/airport-bssid-0.1.0/Build/Release/airport-bssid"
