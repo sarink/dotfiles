@@ -4,4 +4,4 @@
 # --------
 # Clone this repo into: ~/
 # Rename the folder to: custom-dotfiles
-# Add the following line to ~/.bash_profile: source ~/custom-dotfiles/.load-custom-dotfiles
+# Add the following line to ~/.bash_profile: source ./~/custom-dotfiles/load-custom-dotfiles
