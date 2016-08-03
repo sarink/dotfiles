@@ -6,7 +6,7 @@ README
 
 2. Rename the folder to: custom-dotfiles
 
-3. Move .vimrc from ~/custom-dotfiles/.vimrc to: ~
+3. Add a ~/.vimrc file with the following: source ~/custom-dotfiles/.vimrc
 
 4. Add the following to ~/.bash_profile:
 
