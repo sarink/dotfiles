@@ -1,5 +1,5 @@
 # Load custom shell dotfiles
-for file in ~/custom_dotfiles/.{.osx,env_vars,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork}; do
+for file in ~/.{.osx,env_vars,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork}; do
   [ -r "$file" ] && source "$file"
 done
 unset file
