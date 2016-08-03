@@ -1,0 +1,25 @@
+function parse_git_branch {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+function git_stats_by_author() {
+    git log --author="$1" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
+}
+
+function docker_eval() {
+    eval $(docker-machine env default)
+}
+
+# https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
+function process_MP4s() {
+    for f in *.MP4
+    do
+        ffmpeg -i $f -f image2 -r 1 -q 1 $f-%08d.jpg
+
+        for jpg in $f*.jpg
+        do
+            SetFile -d "$(GetFileInfo -d $f)" $jpg
+            SetFile -m "$(GetFileInfo -m $f)" $jpg
+        done
+    done
+}
