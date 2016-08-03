@@ -1,7 +1,17 @@
-# custom-dotfiles
-#
-# README
-# --------
-# Clone this repo into: ~/
-# Rename the folder to: custom-dotfiles
-# Add the following line to ~/.bash_profile: source ./~/custom-dotfiles/load-custom-dotfiles.sh
+custom-dotfiles
+
+README
+--------
+1. Clone this repo into: ~/
+
+2. Rename the folder to: custom-dotfiles
+
+3. Move .vimrc from ~/custom-dotfiles/.vimrc to: ~
+
+4. Add the following to ~/.bash_profile:
+
+# Loads custom shell dotfiles
+for file in ~/custom-dotfiles/.{profile,osx,env_vars,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork}; do
+  [ -r "$file" ] && source "$file"
+done
+unset file
