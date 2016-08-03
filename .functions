@@ -10,6 +10,9 @@ function docker_eval() {
     eval $(docker-machine env default)
 }
 
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
+
 # https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
 function process_MP4s() {
     for f in *.MP4
