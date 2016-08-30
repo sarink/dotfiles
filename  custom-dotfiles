@@ -9,9 +9,8 @@ README
 3. Add a ~/.vimrc file with the following: source ~/custom-dotfiles/.vimrc
 
 4. Add the following to ~/.bash_profile:
-
 # Loads custom shell dotfiles
-for file in ~/custom-dotfiles/.{profile,osx,env_vars,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork}; do
+for file in ~/custom-dotfiles/.{profile,rvm,osx,env_vars,brew_nvm,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork,verizon}; do
   [ -r "$file" ] && source "$file"
 done
 unset file

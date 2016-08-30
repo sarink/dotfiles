@@ -1,0 +1,20 @@
+alias goverizon="cd /Users/sarinka/Projects/verizon/use-website/http/src/main/webapp/src"
+
+
+verizon_use_website_refresh() {
+    cd $HOME/Projects/verizon/use-website/
+    docker stop use-website
+    docker-machine restart verizon
+    verizon_eval
+    update_docker_hosts
+    docker restart use-website
+    docker attach use-website
+}
+
+verizon_eval() {
+    eval $(docker-machine env verizon)
+}
+
+
+    
+alias verizon_use_website_login="docker start use-website && docker exec -it use-website bash"

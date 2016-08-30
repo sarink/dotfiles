@@ -10,8 +10,19 @@ function docker_eval() {
     eval $(docker-machine env default)
 }
 
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
+function update_docker_hosts() {
+    # Clear existing *.docker.local entries from /etc/hosts
+    sudo sed -i '' '/\.docker\.local$/d' /etc/hosts
+
+    # Iterate over each machine and add an entry to /etc/hosts
+    docker-machine ls | tail -n +2 | awk '{print $1}' \
+    | while read -r MACHINE; do
+    MACHINE_IP="$(docker-machine ip ${MACHINE} 2>/dev/null)"
+    [[ -n $MACHINE_IP ]] && echo "${MACHINE_IP}     ${MACHINE}.docker.local" | sudo tee -a /etc/hosts
+    export no_proxy=$no_proxy,$MACHINE_IP
+    done
+}
+
 
 # https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
 function process_MP4s() {
