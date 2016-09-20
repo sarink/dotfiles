@@ -9,7 +9,7 @@ README
 3. Add the following to ~/.bash_profile:
 ```
 # Loads custom shell dotfiles
-for file in ~/custom-dotfiles/.{profile,rvm,osx,env_vars,brew_nvm,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork,verizon}; do
+for file in ~/custom-dotfiles/.{profile,rvm,osx,env_vars,unix_nvm,brew_nvm,path,aliases,functions,git-completion,sshuttle,americanspiritgraphics,happyfuncorp,worldsinglesnetwork,verizon}; do
   [ -r "$file" ] && source "$file"
 done
 unset file
