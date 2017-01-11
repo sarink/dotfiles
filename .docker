@@ -1,0 +1,21 @@
+
+
+function docker_eval() {
+    eval $(docker-machine env default)
+}
+
+function update_docker_hosts() {
+    # Clear existing *.docker.local entries from /etc/hosts
+    sudo sed -i '' '/\.docker\.local$/d' /etc/hosts
+
+    # Iterate over each machine and add an entry to /etc/hosts
+    docker-machine ls | tail -n +2 | awk '{print $1}' \
+    | while read -r MACHINE; do
+    MACHINE_IP="$(docker-machine ip ${MACHINE} 2>/dev/null)"
+    [[ -n $MACHINE_IP ]] && echo "${MACHINE_IP}     ${MACHINE}.docker.local" | sudo tee -a /etc/hosts
+    export no_proxy=$no_proxy,$MACHINE_IP
+    done
+}
+
+
+

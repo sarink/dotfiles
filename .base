@@ -1,3 +1,21 @@
+##########################################
+# env vars
+##########################################
+export VISUAL=vim
+export EDITOR="$VISUAL"#
+
+
+##########################################
+# functions
+##########################################
+function parse_git_branch {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+
+##########################################
+# aliases
+##########################################
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
   colorflag='--color'
@@ -12,3 +30,8 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias cls='clear'
 alias ll='ls -l'
 
+
+##########################################
+# shell profile
+##########################################
+export PS1="\[\e[34;0m\]\u@\h:\W \$(parse_git_branch)\\$ \[\e[0m\]"
