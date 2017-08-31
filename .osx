@@ -1,5 +1,5 @@
 # Development
-alias godev='cd ~/Projects'
+alias godev='cd ~/partition/Projects'
 
 # Restart camera
 alias killcam='sudo killall AppleCameraAssistant && sudo killall VDCAssistant'
@@ -35,3 +35,6 @@ function process_MP4s() {
         done
     done
 }
+
+# not sure what this does anymore?
+alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;killall Finder;echo "Rebuilt Open With, relaunching Finder"'

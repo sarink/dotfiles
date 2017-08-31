@@ -1,8 +1,8 @@
-alias goverizon="cd /Users/sarinka/Projects/verizon/use-website/http/src/main/webapp/src"
+alias goverizon="cd /Users/sarinka/partition/Projects/verizon/use-website/http/src/main/webapp/src"
 
 
 verizon_use_website_refresh() {
-    cd $HOME/Projects/verizon/use-website/
+    cd $HOME/Projects/partition/verizon/use-website/
     docker stop use-website
     docker-machine restart verizon
     verizon_eval
