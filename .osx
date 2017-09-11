@@ -36,5 +36,9 @@ function process_MP4s() {
     done
 }
 
-# not sure what this does anymore?
+# https://github.com/atom/atom/issues/9774
 alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;killall Finder;echo "Rebuilt Open With, relaunching Finder"'
+
+# macOS Sierra "Gatekeeper"
+alias gatekeeper-disable="sudo spctl --master-disable"
+alias gatekeeper-enable="sudo spctl --master-enable"
