@@ -1,4 +1,7 @@
-# Development
+# For homebrew
+export PATH="/usr/local/bin:$PATH"
+
+# Development alias
 alias godev='cd ~/partition/Projects'
 
 # Restart camera
