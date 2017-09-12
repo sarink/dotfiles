@@ -12,7 +12,10 @@ git clone https://gist.github.com/268d57f66ca1ffafe07b30fbe30434eb.git ~/custom-
 git clone https://github.com/VundleVim/Vundle.vim.git ~/custom-dotfiles/vundle/Vundle.vim
 ```
 
-3. Add a ~/.vimrc file with the following: `source ~/custom-dotfiles/.vimrc`
+3. Add a ~/.vimrc file with the following line at the top:
+```
+source ~/custom-dotfiles/.vimrc
+```
 
 4. Add the following to ~/.bash_profile:
 ```
