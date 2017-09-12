@@ -7,7 +7,7 @@ README
 git clone https://gist.github.com/268d57f66ca1ffafe07b30fbe30434eb.git ~/custom-dotfiles
 ```
 
-2. Clone vundle (for vim):
+2. Clone vundle into: ~/custom-dotfiles/vundle/Vundle.vim
 ```
 git clone https://github.com/VundleVim/Vundle.vim.git ~/custom-dotfiles/vundle/Vundle.vim
 ```
@@ -19,8 +19,8 @@ source ~/custom-dotfiles/.vimrc
 
 4. Add the following to ~/.bash_profile:
 ```
-# Loads custom shell dotfiles
-for file in ~/custom-dotfiles/.{base,rvm,osx,unix_nvm,docker,git-completion,git-utils}; do
+# Loads custom shell dotfiles (customize the list below accordingly)
+for file in ~/custom-dotfiles/.{base,git-completion,git-utils}; do
   [ -r "$file" ] && source "$file"
 done
 unset file
