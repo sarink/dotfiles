@@ -1,21 +1,18 @@
 # For homebrew
 export PATH="/usr/local/bin:$PATH"
 
-# Development alias
-alias godev='cd ~/partition/Projects'
-
 # Restart camera
 alias killcam='sudo killall AppleCameraAssistant && sudo killall VDCAssistant'
 
 # Don't keep VLC  history
-defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
-defaults write org.videolan.vlc NSRecentDocumentsLimit 0
-defaults write org.videolan.vlc.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
+# defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
+# defaults write org.videolan.vlc NSRecentDocumentsLimit 0
+# defaults write org.videolan.vlc.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
 
 # Don't keep QuickTime history
-defaults delete com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments
-defaults write com.apple.QuickTimePlayerX NSRecentDocumentsLimit 0
-defaults write com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
+# defaults delete com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments
+# defaults write com.apple.QuickTimePlayerX NSRecentDocumentsLimit 0
+# defaults write com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
 
 # Show/hide system files
 alias showsysfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
