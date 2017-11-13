@@ -14,7 +14,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/custom-dotfiles/vundle/V
 
 3. Add a ~/.vimrc file with the following line at the top:
 ```
-source ~/custom-dotfiles/.vimrc
+echo ". ~/custom-dotfiles/.vimrc" >> ~/.vimrc 
 ```
 
 4. Add the following to ~/.bash_profile:
