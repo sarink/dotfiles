@@ -42,3 +42,6 @@ alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/Lau
 # macOS Sierra "Gatekeeper"
 alias gatekeeper-disable="sudo spctl --master-disable"
 alias gatekeeper-enable="sudo spctl --master-enable"
+
+# Toggle wifi
+alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
