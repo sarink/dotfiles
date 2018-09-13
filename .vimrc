@@ -16,6 +16,9 @@ syntax on
 " Show what's happening in the bottom right corner
 set showcmd
 
+" Disable automatic visual mode on mouse select
+set mouse-=a
+
 " Enter 'jj' in insert mode to return to normal mode
 inoremap jj <ESC>
 
