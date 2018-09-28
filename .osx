@@ -1,8 +1,15 @@
 # For homebrew
-export PATH="/usr/local/bin:$PATH"
+# export PATH="/usr/local/bin:$PATH"
+# export PATH="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages:$PATH"
+
+# alias pip="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip"
+# alias pylint="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pylint"
 
 # Restart camera
-alias killcam='sudo killall AppleCameraAssistant && sudo killall VDCAssistant'
+alias fixcam='sudo killall VDCAssistant'
+
+# Restart bluetooth
+alias fixbt='sudo kextload -b com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport'
 
 # Don't keep VLC  history
 # defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
@@ -37,11 +44,11 @@ function process_MP4s() {
 }
 
 # https://github.com/atom/atom/issues/9774
-alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;killall Finder;echo "Rebuilt Open With, relaunching Finder"'
+# alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;killall Finder;echo "Rebuilt Open With, relaunching Finder"'
 
 # macOS Sierra "Gatekeeper"
-alias gatekeeper-disable="sudo spctl --master-disable"
-alias gatekeeper-enable="sudo spctl --master-enable"
+# alias gatekeeper-disable="sudo spctl --master-disable"
+# alias gatekeeper-enable="sudo spctl --master-enable"
 
 # Toggle wifi
 alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
