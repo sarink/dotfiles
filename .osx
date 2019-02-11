@@ -52,3 +52,6 @@ function process_MP4s() {
 
 # Toggle wifi
 alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
+
+# https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
