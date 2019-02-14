@@ -17,7 +17,12 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/custom-dotfiles/vundle/V
 echo "source ~/custom-dotfiles/.vimrc" >> ~/.vimrc 
 ```
 
-4. Add the following to ~/.bash_profile:
+4. Create a symbolic link for the tmux config
+```
+ln -s ~/custom-dotfiles/.tmux.conf .tmux.conf
+```
+
+4. Add the following to ~/.bash_profile (once vim is open, first execute `:VundleInstall` to install plugins)
 ```
 # Loads custom shell dotfiles (customize the list below accordingly)
 for file in ~/custom-dotfiles/.{base,git-completion,git-utils}; do
