@@ -6,10 +6,10 @@
 # alias pylint="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pylint"
 
 # Restart camera
-alias fixcam='sudo killall VDCAssistant'
+# alias fixcam='sudo killall VDCAssistant'
 
 # Restart bluetooth
-alias fixbt='sudo kextload -b com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport'
+# alias fixbt='sudo kextload -b com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport'
 
 # Don't keep VLC  history
 # defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
@@ -43,9 +43,6 @@ function process_MP4s() {
     done
 }
 
-# https://github.com/atom/atom/issues/9774
-# alias killdups='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;killall Finder;echo "Rebuilt Open With, relaunching Finder"'
-
 # macOS Sierra "Gatekeeper"
 # alias gatekeeper-disable="sudo spctl --master-disable"
 # alias gatekeeper-enable="sudo spctl --master-enable"
@@ -54,4 +51,4 @@ function process_MP4s() {
 alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
 
 # https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+# defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
