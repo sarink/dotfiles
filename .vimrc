@@ -91,8 +91,8 @@ autocmd FileType gitcommit setlocal tw=80 colorcolumn=81
 
 
 " Vundle!
-set rtp+=~/custom-dotfiles/vundle/Vundle.vim
-call vundle#begin('~/custom-dotfiles/vundle')
+set rtp+=~/dotfiles/vundle/Vundle.vim
+call vundle#begin('~/dotfiles/vundle')
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'dracula/vim'
 Plugin 'vim-airline/vim-airline'
