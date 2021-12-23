@@ -1,5 +1,11 @@
-# For homebrew
-# export PATH="/usr/local/bin:$PATH"
+# Show/hide system files
+alias showsysfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+# VSCode key repeat (https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
+# defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
+# For homebrew # export PATH="/usr/local/bin:$PATH"
 # export PATH="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages:$PATH"
 
 # alias pip="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip"
@@ -21,34 +27,27 @@
 # defaults write com.apple.QuickTimePlayerX NSRecentDocumentsLimit 0
 # defaults write com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
 
-# Show/hide system files
-alias showsysfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
-alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
-
 # airport
-alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
-alias airport-bssid="/Applications/airport-bssid-0.1.0/Build/Release/airport-bssid"
+# alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+# alias airport-bssid="/Applications/airport-bssid-0.1.0/Build/Release/airport-bssid"
 
 # https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
-function process_MP4s() {
-    for f in *.MP4
-    do
-        ffmpeg -i $f -f image2 -r 1 -q 1 $f-%08d.jpg
-
-        for jpg in $f*.jpg
-        do
-            SetFile -d "$(GetFileInfo -d $f)" $jpg
-            SetFile -m "$(GetFileInfo -m $f)" $jpg
-        done
-    done
-}
+# function process_MP4s() {
+#   for f in *.MP4
+#   do
+#       ffmpeg -i $f -f image2 -r 1 -q 1 $f-%08d.jpg
+#
+#       for jpg in $f*.jpg
+#       do
+#           SetFile -d "$(GetFileInfo -d $f)" $jpg
+#           SetFile -m "$(GetFileInfo -m $f)" $jpg
+#       done
+#   done
+# }
 
 # macOS Sierra "Gatekeeper"
 # alias gatekeeper-disable="sudo spctl --master-disable"
 # alias gatekeeper-enable="sudo spctl --master-enable"
 
 # Toggle wifi
-alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
-
-# https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683
-# defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+# alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
