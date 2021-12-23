@@ -32,21 +32,3 @@ function parse_git_branch {
 
 export PS1="\[\e[34;0m\]\u@\h:\W \$(parse_git_branch)\\$ \[\e[0m\]"
 
-
-##########################################
-# bash completion
-##########################################
-# Bash tmux completion
-if [ -f /usr/local/etc/bash_completion.d/tmux ]; then
-  source /usr/local/etc/bash_completion.d/tmux
-else
-  source ~/custom-dotfiles/.tmux-completion
-fi
-
-# Bash git completion
-if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
-  source /usr/local/etc/bash_completion.d/git-completion.bash
-else
-  source ~/custom-dotfiles/.git-completion
-fi
-
