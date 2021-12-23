@@ -88,11 +88,9 @@ autocmd FileType javascript,javascript.jsx setlocal sw=2 ts=2 tw=100
 " Automatic text wrapping at col 80 for git commits
 autocmd FileType gitcommit setlocal tw=80 colorcolumn=81
 
-
-
 " Vundle!
-set rtp+=~/dotfiles/vundle/Vundle.vim
-call vundle#begin('~/dotfiles/vundle')
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'dracula/vim'
 Plugin 'vim-airline/vim-airline'
