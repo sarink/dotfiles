@@ -1,2 +1,0 @@
-alias gohfc="cd $HOME/Projects/Development/happyfuncorp"
-alias hfc-fanwagondev="cd $HOME/Projects/Development/happyfuncorp/vagrant-boxes && vagrant up fanwagon && vagrant ssh fanwagon"
