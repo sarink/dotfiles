@@ -1,4 +1,4 @@
 # sshuttle
-# alias tunnel='sshuttle --dns --daemon --pidfile=/tmp/sshuttle.pid --remote=sshuttle --dns -r sarink@backupsy:22  0/0'
-# alias tunnelx='[[ -f /tmp/sshuttle.pid ]] && kill $(cat /tmp/sshuttle.pid) && echo "Disconnected."'
-# alias tunnel='sshuttle --dns -r sarink@backupsy:22 0/0'
+alias tunnel='sshuttle --dns --daemon --pidfile=/tmp/sshuttle.pid --remote=sshuttle --dns -r sarink@backupsy:22  0/0'
+alias tunnelx='[[ -f /tmp/sshuttle.pid ]] && kill $(cat /tmp/sshuttle.pid) && echo "Disconnected."'
+alias tunnel='sshuttle --dns -r sarink@backupsy:22 0/0'
