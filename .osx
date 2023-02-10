@@ -5,31 +5,18 @@ alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killal
 # VSCode key repeat (https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
 # defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
-# For homebrew # export PATH="/usr/local/bin:$PATH"
-# export PATH="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages:$PATH"
-
-# alias pip="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip"
-# alias pylint="/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pylint"
-
 # Restart camera
 # alias fixcam='sudo killall VDCAssistant'
 
 # Restart bluetooth
 # alias fixbt='sudo kextload -b com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport'
 
-# Don't keep VLC  history
-# defaults delete org.videolan.vlc.LSSharedFileList RecentDocuments
-# defaults write org.videolan.vlc NSRecentDocumentsLimit 0
-# defaults write org.videolan.vlc.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
-
-# Don't keep QuickTime history
-# defaults delete com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments
-# defaults write com.apple.QuickTimePlayerX NSRecentDocumentsLimit 0
-# defaults write com.apple.QuickTimePlayerX.LSSharedFileList RecentDocuments -dict-add MaxAmount 0
-
-# airport
+# Use airport to search for wifi networks
 # alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 # alias airport-bssid="/Applications/airport-bssid-0.1.0/Build/Release/airport-bssid"
+
+# Toggle wifi
+# alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
 
 # https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
 # function process_MP4s() {
@@ -44,10 +31,3 @@ alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killal
 #       done
 #   done
 # }
-
-# macOS Sierra "Gatekeeper"
-# alias gatekeeper-disable="sudo spctl --master-disable"
-# alias gatekeeper-enable="sudo spctl --master-enable"
-
-# Toggle wifi
-# alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
