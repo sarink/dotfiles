@@ -16,6 +16,9 @@ done
 unset file
 ```
 
+_Note: If you are on a machine that doesn't have git bash completion, you can add git-completion to the list above,
+it's probably slightly outdated, but better than nothing_
+
 ## Vim
 Create a symbolic link for the vimrc config
 ```
