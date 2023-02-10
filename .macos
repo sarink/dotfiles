@@ -11,13 +11,14 @@ alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killal
 # Restart bluetooth
 # alias fixbt='sudo kextload -b com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport'
 
+# Toggle wifi
+# alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
+
 # Use airport to search for wifi networks
 # alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 # alias airport-bssid="/Applications/airport-bssid-0.1.0/Build/Release/airport-bssid"
 
-# Toggle wifi
-# alias togglewifi="networksetup -setairportpower airport off && networksetup -setairportpower airport on && networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
-
+# Extract jpgs from mp4s
 # https://trac.ffmpeg.org/wiki/Create%20a%20thumbnail%20image%20every%20X%20seconds%20of%20the%20video
 # function process_MP4s() {
 #   for f in *.MP4
