@@ -15,5 +15,8 @@ function update_docker_hosts() {
     done
 }
 
-
+function stop_docker() {
+    containers=$(docker ps -qa)
+    docker stop $containers
+}
 
