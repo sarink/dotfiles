@@ -10,7 +10,7 @@ git clone git@github.com:sarink/dotfiles.git ~/dotfiles
 Add the following to ~/.bash_profile
 ```
 # Loads dotfiles (customize the list below accordingly)
-for file in ~/dotfiles/.{base,brew-bash-completion,docker,macos,nvm,tmux-completion}; do
+for file in ~/dotfiles/.{base,brew,brew-bash-completion,docker,macos,nvm,tmux-completion}; do
   [ -r "$file" ] && source "$file"
 done
 unset file
