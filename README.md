@@ -4,7 +4,7 @@
 
 Clone the contents of this repo into: ~/dotfiles:
 ```
-git clone git@github.com:sarink/dotfiles.git ~/dotfiles
+git clone https://github.com/sarink/dotfiles.git ~/dotfiles
 ```
 
 Add the following to ~/.bash_profile
@@ -27,7 +27,7 @@ ln -s ~/dotfiles/.vimrc ~/.vimrc
 
 Clone vundle
 ```
-git clone git@github.com:VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 Open vim, run `:VundleInstall` to install vim plugins (official [vundle docs](https://github.com/VundleVim/Vundle.vim)
