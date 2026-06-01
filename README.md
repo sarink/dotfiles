@@ -1,23 +1,35 @@
 # dotfiles
 
-## Bash
+## Zsh
 
 Clone the contents of this repo into: ~/dotfiles:
 ```
 git clone https://github.com/sarink/dotfiles.git ~/dotfiles
 ```
 
-Add the following to ~/.bash_profile
+Symlink the zsh startup files:
 ```
-# Loads dotfiles (customize the list below accordingly)
-for file in ~/dotfiles/.{base,brew,brew-bash-completion,docker,macos,nvm,tmux-completion}; do
-  [ -r "$file" ] && source "$file"
-done
-unset file
+ln -s ~/dotfiles/.zprofile ~/.zprofile
+ln -s ~/dotfiles/.zshrc ~/.zshrc
 ```
 
-_Note: If you are on a machine that doesn't have git bash completion, you can add git-completion to the list above,
-it's probably slightly outdated, but better than nothing_
+`.zprofile` (login shells) sets up Homebrew; `.zshrc` (interactive shells) loads
+the shared fragments (`.base`, `.docker`, `.macos`), initializes native zsh
+completion, activates [mise](https://mise.jdx.dev/) for Node/Ruby/Python, and
+sets the prompt.
+
+### Notes
+
+- **Completion** is native zsh (`compinit`). The old vendored bash completion
+  files (`git`, `tmux`, `brew`) were removed — zsh ships better ones. Homebrew's
+  zsh completions are picked up via `$fpath`.
+- **Version management** uses `mise` instead of `nvm`. To make it honor existing
+  `.nvmrc` files (in addition to `.tool-versions` / `mise.toml`), run once:
+  ```
+  mise settings add idiomatic_version_file_enable_tools node
+  ```
+- The shared fragments (`.base`, `.docker`, `.macos`) are POSIX-ish and also work
+  if sourced from bash; only the prompt and completion are zsh-specific.
 
 ## Vim
 Create a symbolic link for the vimrc config
