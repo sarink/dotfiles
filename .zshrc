@@ -15,9 +15,9 @@ export EDITOR="$VISUAL"
 ##########################################
 # Completion
 ##########################################
-# Homebrew's zsh completions on $fpath. Prefix is hardcoded to avoid forking
-# `brew` (slow) on every shell startup.
-fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+# Homebrew's zsh completions on $fpath. HOMEBREW_PREFIX is exported by
+# `brew shellenv` in .zprofile; fall back to the Apple Silicon default.
+fpath=("${HOMEBREW_PREFIX:-/opt/homebrew}/share/zsh/site-functions" $fpath)
 # Reuse the cached completion dump for fast startup; do the full rebuild +
 # security audit only once every 24h (or when the dump is missing).
 autoload -Uz compinit
