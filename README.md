@@ -22,6 +22,20 @@ copies after editing anything in the repo, just run `./install.sh` again.
 loads the shared fragments, initializes native zsh completion, activates
 [mise](https://mise.jdx.dev/) for Node/Ruby/Python, and sets the prompt.
 
+### Machine-local config
+
+Everything in this repo is meant to be portable across machines. Anything
+specific to one Mac (extra `PATH` entries for locally installed tools, work
+env vars, one-off aliases) goes in `~/.zshrc.local`, which `.zshrc` sources at
+the very end if the file exists. It is not tracked here and not touched by
+`install.sh` — create it by hand on each machine that needs it:
+```
+echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.zshrc.local
+```
+
+`.zshrc.local` is not a zsh built-in, just a common convention; it only works
+because of the `source` line at the bottom of `.zshrc`.
+
 ### Notes
 
 - **Completion** is native zsh (`compinit`). The old vendored bash completion

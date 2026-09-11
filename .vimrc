@@ -51,11 +51,20 @@ set tabstop=4
 set shiftwidth=4
 set nowrap
 set textwidth=150
-set formatoptions=tcq
+set formatoptions=cq
 set ai
 set copyindent
 set smarttab
 set expandtab
+
+" Bracketed paste: terminal wraps pasted text in markers so Vim skips autoindent for it
+let &t_BE = "\<Esc>[?2004h"
+let &t_BD = "\<Esc>[?2004l"
+exec "set t_PS=\<Esc>[200~"
+exec "set t_PE=\<Esc>[201~"
+
+" Manual fallback: F2 toggles paste mode
+set pastetoggle=<F2>
 
 " Get menu for autocompletes like :find
 set wildmenu

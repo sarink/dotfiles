@@ -67,6 +67,22 @@ function stop_docker() {
   docker stop $containers
 }
 
+# Kill whatever is listening on a TCP port: killport 10000
+function killport() {
+  if [ -z "$1" ]; then
+    echo "usage: killport <port>"
+    return 1
+  fi
+  local pids
+  pids=$(lsof -tiTCP:"$1" -sTCP:LISTEN)
+  if [ -z "$pids" ]; then
+    echo "nothing listening on port $1"
+    return 1
+  fi
+  echo "$pids" | xargs -I{} sh -c 'echo "killing $(ps -o pid=,command= -p {} | cut -c1-80)"'
+  echo "$pids" | xargs kill
+}
+
 # Lines added/removed by an author across all of git history
 function git_stats_by_author() {
   git log --author="$1" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
@@ -96,3 +112,8 @@ setopt PROMPT_SUBST
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats '(%b) '
 PROMPT='%F{blue}%n@%m:%1~ ${vcs_info_msg_0_}%#%f '
+
+##########################################
+# Machine-local overrides (not tracked in dotfiles)
+##########################################
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
