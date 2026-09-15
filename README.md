@@ -1,20 +1,22 @@
 # dotfiles
 
 The repo is the source of truth. Edit files here, then run `./install.sh` to
-copy them into `~`. (No symlinks — `install.sh` copies, backing up any existing
-real file to `<file>.bak`.)
+copy them into `~`. (No symlinks — `install.sh` copies, and asks before
+replacing a file that already exists.)
 
 ## Install
 
 Clone the repo and run the install script:
+
 ```
 git clone https://github.com/sarink/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 ```
 
-This copies the shell, vim, and tmux dotfiles into `~`. To update your home
-copies after editing anything in the repo, just run `./install.sh` again.
+This copies the shell, vim, and tmux dotfiles into `~`, and the Claude Code
+config into `~/.claude`. To update your home copies after editing anything in
+the repo, just run `./install.sh` again.
 
 ## Zsh
 
@@ -29,6 +31,7 @@ specific to one Mac (extra `PATH` entries for locally installed tools, work
 env vars, one-off aliases) goes in `~/.zshrc.local`, which `.zshrc` sources at
 the very end if the file exists. It is not tracked here and not touched by
 `install.sh` — create it by hand on each machine that needs it:
+
 ```
 echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.zshrc.local
 ```
@@ -52,6 +55,7 @@ because of the `source` line at the bottom of `.zshrc`.
 ## Vim
 
 `install.sh` copies `.vimrc`. Then clone vundle:
+
 ```
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
@@ -61,8 +65,29 @@ Open vim, run `:VundleInstall` to install vim plugins (official [vundle docs](ht
 ## Tmux
 
 `install.sh` copies `.tmux.conf`. Then clone the tmux plugin manager:
+
 ```
 git clone git@github.com:tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 Open tmux, run `<prefix>I` (probably `ctrl-aI`) to install tmux plugins (official [tpm docs](https://github.com/tmux-plugins/tpm)).
+
+## Claude Code
+
+`claude/` mirrors `~/.claude/` — `install.sh` copies every file in it:
+
+- `settings.json` — Claude Code settings
+- `statusline.sh` — status line script
+- `skills/` — personal skills (`/eli5`, `/qq`)
+
+Paths in `settings.json` use `~/.claude/...`, never an absolute home dir, so
+they work on any machine.
+
+Claude Code also writes to `~/.claude/settings.json` itself (most `/config`
+options, the `/model` default). Copy anything you want to keep back into the
+repo before running `install.sh` — answering `y` replaces the file:
+
+```
+diff ~/.claude/settings.json claude/settings.json
+cp ~/.claude/settings.json claude/settings.json
+```
