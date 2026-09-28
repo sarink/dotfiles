@@ -13,8 +13,9 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 FILES=".zshrc .zprofile .zshenv .vimrc .tmux.conf"
 
 # Plugin managers, cloned into $HOME if absent. Their plugins are then
-# installed headlessly from whatever .vimrc declares.
+# installed headlessly from whatever .vimrc / .tmux.conf declare.
 VUNDLE_DIR="$HOME/.vim/bundle/Vundle.vim"
+TPM_DIR="$HOME/.tmux/plugins/tpm"
 
 # install_file <src> <dest>
 install_file() {
@@ -246,3 +247,34 @@ else
   echo "skipped vim plugins (vim not installed)"
 fi
 
+# Tmux plugins via tpm. Its install script asks a tmux server for the plugin
+# path that tpm sets when .tmux.conf is sourced, so run it against a private
+# throwaway server: TMUX_TMPDIR picks the socket dir and TMUX is unset so this
+# works from inside an existing tmux session without touching that server.
+# The clones are plain public GitHub repos; tpm uses `https://git::@github.com`
+# URLs, which make git consult the credential helper, and on macOS the keychain
+# helper can block waiting for user input. Clear it and disable prompts so the
+# install stays non-interactive.
+if command -v tmux >/dev/null 2>&1; then
+  clone_if_missing https://github.com/tmux-plugins/tpm "$TPM_DIR"
+  tmux_tmpdir="$(mktemp -d)"
+  env -u TMUX TMUX_TMPDIR="$tmux_tmpdir" tmux new-session -d -s dotfiles-install
+  if env -u TMUX TMUX_TMPDIR="$tmux_tmpdir" \
+      GIT_TERMINAL_PROMPT=0 \
+      GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0= \
+      "$TPM_DIR/bin/install_plugins" >/dev/null; then
+    tpm_ok=1
+  else
+    tpm_ok=0
+  fi
+  env -u TMUX TMUX_TMPDIR="$tmux_tmpdir" tmux kill-server
+  rm -rf "$tmux_tmpdir"
+  if [ "$tpm_ok" = 1 ]; then
+    echo "installed tmux plugins"
+  else
+    echo "tmux plugin install failed" >&2
+    exit 1
+  fi
+else
+  echo "skipped tmux plugins (tmux not installed)"
+fi
