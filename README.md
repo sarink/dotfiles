@@ -16,9 +16,11 @@ cd ~/dotfiles
 ```
 
 This copies the shell, vim, and tmux dotfiles into `~`, the Claude Code
-config into `~/.claude`, and the Codex config into `~/.codex`. To update
-your home copies after editing anything in the repo, just run `./install.sh`
-again.
+config into `~/.claude`, and the Codex config into `~/.codex`. It then clones
+the vim and tmux plugin managers (Vundle and tpm) if they are missing and
+installs the plugins declared in `.vimrc` and `.tmux.conf`, all without opening
+vim or tmux. To update your home copies after editing anything in the repo,
+just run `./install.sh` again.
 
 ## Zsh
 
@@ -56,23 +58,26 @@ because of the `source` line at the bottom of `.zshrc`.
 
 ## Vim
 
-`install.sh` copies `.vimrc`. Then clone vundle:
-
-```
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-```
-
-Open vim, run `:VundleInstall` to install vim plugins (official [vundle docs](https://github.com/VundleVim/Vundle.vim)).
+`install.sh` copies `.vimrc`, clones [vundle](https://github.com/VundleVim/Vundle.vim)
+into `~/.vim/bundle/Vundle.vim` if it isn't there, and runs `:PluginInstall`
+headlessly. Add plugins as `Plugin '...'` lines in `.vimrc` and re-run
+`./install.sh` (or `:PluginInstall` inside vim).
 
 ## Tmux
 
-`install.sh` copies `.tmux.conf`. Then clone the tmux plugin manager:
+`install.sh` copies `.tmux.conf`, clones [tpm](https://github.com/tmux-plugins/tpm)
+into `~/.tmux/plugins/tpm` if it isn't there, and installs the declared plugins
+with tpm's `install_plugins` script. Add plugins as `set -g @plugin '...'` lines
+in `.tmux.conf` and re-run `./install.sh` (or `<prefix>I` inside tmux).
 
-```
-git clone git@github.com:tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
+Plugins in use:
 
-Open tmux, run `<prefix>I` (probably `ctrl-aI`) to install tmux plugins (official [tpm docs](https://github.com/tmux-plugins/tpm)).
+- **tmux-resurrect** — `<prefix>ctrl-s` saves sessions, `<prefix>ctrl-r` restores.
+- **tmux-continuum** — auto-saves every 15 minutes and restores on tmux start
+  (`@continuum-restore on`).
+
+If tmux is already running when you run `./install.sh`, reload the config with
+`tmux source ~/.tmux.conf` so the new plugins take effect.
 
 ## Claude Code
 
