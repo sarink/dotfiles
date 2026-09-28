@@ -12,6 +12,10 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Dotfiles to install (relative to the repo root).
 FILES=".zshrc .zprofile .zshenv .vimrc .tmux.conf"
 
+# Plugin managers, cloned into $HOME if absent. Their plugins are then
+# installed headlessly from whatever .vimrc declares.
+VUNDLE_DIR="$HOME/.vim/bundle/Vundle.vim"
+
 # install_file <src> <dest>
 install_file() {
   src="$1"
@@ -189,6 +193,16 @@ EOF
   rm -f "$merged"
 }
 
+# clone_if_missing <repo-url> <dest-dir>
+clone_if_missing() {
+  if [ -d "$2" ]; then
+    echo "exists  $2"
+  else
+    git clone --quiet --depth 1 "$1" "$2"
+    echo "cloned  $2"
+  fi
+}
+
 for f in $FILES; do
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
@@ -210,3 +224,25 @@ for agent in claude codex; do
     esac
   done
 done
+
+# Vim plugins via Vundle. -E -s runs vim non-interactively; -i NONE skips
+# viminfo so nothing is written to $HOME besides the plugins themselves. Vim
+# exits 1 if anything in .vimrc errored while the plugins were still missing,
+# even when the install itself succeeded, so check for the plugin directories
+# instead of trusting the exit code.
+if command -v vim >/dev/null 2>&1; then
+  clone_if_missing https://github.com/VundleVim/Vundle.vim.git "$VUNDLE_DIR"
+  vim -E -s -u "$HOME/.vimrc" -i NONE -c 'PluginInstall' -c 'qall' </dev/null >/dev/null || true
+  missing=$(sed -n "s|^Plugin '[^/']*/\([^']*\)'.*|\1|p" "$HOME/.vimrc" |
+    while read -r name; do
+      [ -d "$(dirname "$VUNDLE_DIR")/$name" ] || echo "$name"
+    done)
+  if [ -n "$missing" ]; then
+    echo "vim plugin install failed, missing:" $missing >&2
+    exit 1
+  fi
+  echo "installed vim plugins"
+else
+  echo "skipped vim plugins (vim not installed)"
+fi
+
