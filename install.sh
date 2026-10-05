@@ -34,8 +34,10 @@ for f in $FILES; do
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
 
-# Claude Code config: everything under claude/ mirrors ~/.claude/.
-cd "$DOTFILES_DIR/claude"
-find . -type f ! -name .DS_Store | while read -r f; do
-  install_file "$DOTFILES_DIR/claude/${f#./}" "$HOME/.claude/${f#./}"
+# Agent config: claude/ and codex/ mirror ~/.claude/ and ~/.codex/.
+for agent in claude codex; do
+  cd "$DOTFILES_DIR/$agent"
+  find . -type f ! -name .DS_Store | while IFS= read -r f; do
+    install_file "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}"
+  done
 done
