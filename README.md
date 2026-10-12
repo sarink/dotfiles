@@ -111,9 +111,8 @@ cp ~/.claude/settings.json claude/settings.json
 - `skills/` — Codex versions of all eight Claude skills: `$eli5`, `$qq`,
   `$screenshot`, `$ponytail`, `$ponytail-review`, `$ponytail-audit`,
   `$ponytail-debt`, and `$ponytail-help`. The first three require explicit
-  invocation; `$eli5` keeps explanations simple until asked for more detail,
-  and `$qq` stays read-only until explicitly released. Ponytail applies only
-  to the request where it is invoked.
+  invocation; `$qq` stays read-only until explicitly released. Ponytail
+  applies only to the request where it is invoked.
 
 Edit the files in `codex/` here and run `./install.sh` on each machine after
 pulling the repo. Start a new Codex session to load updated settings and instructions.
