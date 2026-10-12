@@ -1,8 +1,9 @@
 # dotfiles
 
 The repo is the source of truth. Edit files here, then run `./install.sh` to
-copy them into `~`. (No symlinks — `install.sh` copies, and asks before
-replacing a file that already exists.)
+copy them into `~`. (No symlinks — `install.sh` copies, skips identical files,
+and shows a diff before asking to replace a changed file. Removed lines are
+from the installed copy; added lines are from the repo.)
 
 ## Install
 
@@ -79,7 +80,7 @@ Open tmux, run `<prefix>I` (probably `ctrl-aI`) to install tmux plugins (officia
 
 - `settings.json` — Claude Code settings
 - `statusline.sh` — status line script
-- `skills/` — personal skills (`/eli5`, `/qq`)
+- `skills/` — personal skills (`/eli5`, `/qq`, `/screenshot`, and `/ponytail` with its `-review`, `-audit`, `-debt`, `-help`: MIT, from DietrichGebert/ponytail, changed to run only when invoked and only for that request)
 
 Claude Code separates settings from instructions: `~/.claude/settings.json`
 controls settings and hooks, while `~/.claude/CLAUDE.md` holds user-level
@@ -107,6 +108,12 @@ cp ~/.claude/settings.json claude/settings.json
 - `AGENTS.md` — user-level instructions, including creating Git worktrees in
   `<repo folder>/.codex/worktrees/<worktree-name>` under the primary checkout.
 - `config.toml` — portable settings: no approval prompts and no alternate screen.
+- `skills/` — Codex versions of all eight Claude skills: `$eli5`, `$qq`,
+  `$screenshot`, `$ponytail`, `$ponytail-review`, `$ponytail-audit`,
+  `$ponytail-debt`, and `$ponytail-help`. The first three require explicit
+  invocation; `$eli5` keeps explanations simple until asked for more detail,
+  and `$qq` stays read-only until explicitly released. Ponytail applies only
+  to the request where it is invoked.
 
 Edit the files in `codex/` here and run `./install.sh` on each machine after
 pulling the repo. Start a new Codex session to load updated settings and instructions.
