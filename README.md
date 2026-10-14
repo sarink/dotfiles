@@ -80,7 +80,7 @@ Open tmux, run `<prefix>I` (probably `ctrl-aI`) to install tmux plugins (officia
 
 - `settings.json` — Claude Code settings
 - `statusline.sh` — status line script
-- `skills/` — personal skills (`/eli5`, `/qq`, `/screenshot`, and `/ponytail` with its `-review`, `-audit`, `-debt`, `-help`: MIT, from DietrichGebert/ponytail, changed to run only when invoked and only for that request)
+- `skills/` — personal skills (`/eli5`, `/id`, `/qq`, `/screenshot`, and `/ponytail` with its `-review`, `-audit`, `-debt`, `-help`: MIT, from DietrichGebert/ponytail, changed to run only when invoked and only for that request)
 
 Claude Code separates settings from instructions: `~/.claude/settings.json`
 controls settings and hooks, while `~/.claude/CLAUDE.md` holds user-level
@@ -108,9 +108,9 @@ cp ~/.claude/settings.json claude/settings.json
 - `AGENTS.md` — user-level instructions, including creating Git worktrees in
   `<repo folder>/.codex/worktrees/<worktree-name>` under the primary checkout.
 - `config.toml` — portable settings: no approval prompts and no alternate screen.
-- `skills/` — Codex versions of all eight Claude skills: `$eli5`, `$qq`,
-  `$screenshot`, `$ponytail`, `$ponytail-review`, `$ponytail-audit`,
-  `$ponytail-debt`, and `$ponytail-help`. The first three require explicit
+- `skills/` — Codex versions of all nine Claude skills: `$eli5`, `$id`,
+  `$qq`, `$screenshot`, `$ponytail`, `$ponytail-review`, `$ponytail-audit`,
+  `$ponytail-debt`, and `$ponytail-help`. The first four require explicit
   invocation; `$qq` stays read-only until explicitly released. Ponytail
   applies only to the request where it is invoked.
 
