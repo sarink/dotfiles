@@ -63,8 +63,8 @@ alias hidesysfiles='defaults write com.apple.finder AppleShowAllFiles NO; killal
 ##########################################
 # Stop all running Docker containers
 function stop_docker() {
-  containers=$(docker ps -qa)
-  docker stop $containers
+  local containers=(${(f)"$(docker ps -q)"})
+  if (( $#containers )); then docker stop $containers; fi
 }
 
 # Kill whatever is listening on a TCP port: killport 10000
