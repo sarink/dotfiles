@@ -107,7 +107,7 @@ cp ~/.claude/settings.json claude/settings.json
 
 - `AGENTS.md` — user-level instructions, including creating Git worktrees in
   `<repo folder>/.codex/worktrees/<worktree-name>` under the primary checkout.
-- `config.toml` — portable settings: no approval prompts and no alternate screen.
+- `config.toml` — portable settings: full access, no approval prompts, and no alternate screen.
 - `skills/` — Codex versions of all ten Claude skills: `$eli5`, `$handoff`,
   `$id`, `$qq`, `$screenshot`, `$ponytail`, `$ponytail-review`,
   `$ponytail-audit`, `$ponytail-debt`, and `$ponytail-help`. The first five require explicit
@@ -120,8 +120,8 @@ The installer currently targets the default `~/.codex` location; a custom
 `CODEX_HOME` needs the instructions installed there instead.
 
 `AGENTS.md` guides agent behavior; it does not configure the desktop app's
-managed worktree location. `config.toml` sets `approval_policy = "never"` and
-`tui.alternate_screen = "never"`; sandbox permissions are configured separately.
+managed worktree location. `config.toml` sets `approval_policy = "never"`,
+`sandbox_mode = "danger-full-access"`, and `tui.alternate_screen = "never"`.
 
 The installer asks before replacing an existing `~/.codex/config.toml` and
 copies the whole file, without merging. Review any local settings you want to

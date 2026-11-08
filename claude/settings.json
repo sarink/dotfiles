@@ -4,6 +4,9 @@
     "pr": "",
     "sessionUrl": false
   },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -24,7 +27,6 @@
   },
   "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
