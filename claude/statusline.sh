@@ -1,5 +1,6 @@
 #!/bin/bash
-# Renders "<session> | <model> | Free space: <Xk> (<Y>%)" and optionally "| Effort: <level>".
+# Renders "<session> | <model> | Free space: <Xk> (<Y>%)" and optionally "| Effort: <level>"
+# and "| PR #<n>", a clickable link to the current branch's open PR.
 # Session name comes from session_name when set via /rename, otherwise falls
 # back to the first 8 characters of session_id.
 # Free-space counts cache_read + cache_creation + new input tokens so it
@@ -26,6 +27,19 @@ read -r size used < <(printf '%s' "$input" | jq -r '
 
 effort=$(printf '%s' "$input" | jq -r '.effort.level // empty')
 
+# gh takes ~0.5s, so the open-PR lookup is cached per directory and branch for a minute.
+pr=""
+dir=$(printf '%s' "$input" | jq -r '.workspace.current_dir // .cwd // empty')
+if branch=$(git -C "$dir" symbolic-ref --short -q HEAD 2>/dev/null); then
+  cache="${TMPDIR:-/tmp}/claude-statusline-pr${dir//\//_}@${branch//\//_}"
+  if [[ -z $(find "$cache" -mmin -1 2>/dev/null) ]]; then
+    (cd "$dir" && gh pr view --json number,url,state -q 'select(.state == "OPEN") | "\(.number) \(.url)"' 2>/dev/null) > "$cache" || true
+  fi
+  if read -r num url < "$cache"; then
+    pr=$(printf '\e]8;;%s\e\\PR #%s\e]8;;\e\\' "$url" "$num")
+  fi
+fi
+
 if [[ -z "$size" || "$size" -eq 0 ]]; then
   space="Free space: ?"
 else
@@ -37,8 +51,7 @@ prefix=""
 [[ -n "$session" ]] && prefix="${session} | "
 [[ -n "$model" ]] && prefix="${prefix}${model} | "
 
-if [[ -n "$effort" ]]; then
-  printf '%s%s | Effort: %s\n' "$prefix" "$space" "$effort"
-else
-  printf '%s%s\n' "$prefix" "$space"
-fi
+suffix=""
+[[ -n "$effort" ]] && suffix=" | Effort: ${effort}"
+[[ -n "$pr" ]] && suffix="${suffix} | ${pr}"
+printf '%s%s%s\n' "$prefix" "$space" "$suffix"
