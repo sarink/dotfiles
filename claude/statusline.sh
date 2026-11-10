@@ -33,7 +33,14 @@ dir=$(printf '%s' "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 if branch=$(git -C "$dir" symbolic-ref --short -q HEAD 2>/dev/null); then
   cache="${TMPDIR:-/tmp}/claude-statusline-pr${dir//\//_}@${branch//\//_}"
   if [[ -z $(find "$cache" -mmin -1 2>/dev/null) ]]; then
-    (cd "$dir" && gh pr view --json number,url,state -q 'select(.state == "OPEN") | "\(.number) \(.url)"' 2>/dev/null) > "$cache" || true
+    # A failed lookup keeps the last answer instead of hiding the PR.
+    if out=$(cd "$dir" && gh pr view --json number,url,state -q 'select(.state == "OPEN") | "\(.number) \(.url)"' 2>"$cache.err"); then
+      printf '%s\n' "$out" > "$cache"
+    elif grep -q 'no pull requests found' "$cache.err"; then
+      : > "$cache"
+    else
+      touch "$cache"
+    fi
   fi
   if read -r num url < "$cache"; then
     pr=$(printf '\e]8;;%s\e\\PR #%s\e]8;;\e\\' "$url" "$num")
