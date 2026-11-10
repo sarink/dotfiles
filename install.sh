@@ -75,6 +75,120 @@ merge_json_defaults() {
   rm -f "$merged"
 }
 
+# merge_toml_defaults <src> <dest>
+# Same as merge_json_defaults, for TOML. Missing keys are inserted as text
+# (under their existing [table] header, or in a new one at the end) so the
+# rest of dest, comments and formatting included, is left untouched.
+merge_toml_defaults() {
+  src="$1"
+  dest="$2"
+
+  if [ ! -f "$dest" ]; then
+    install_file "$src" "$dest"
+    return
+  fi
+
+  # macOS's /usr/bin/python3 is too old for tomllib; prefer one that has it.
+  py=""
+  for p in python3 /opt/homebrew/bin/python3 /usr/local/bin/python3; do
+    if "$p" -c 'import tomllib' 2>/dev/null; then py="$p"; break; fi
+  done
+  if [ -z "$py" ]; then
+    echo "warning: merging $dest needs python3 >= 3.11 (tomllib); falling back to replace"
+    install_file "$src" "$dest"
+    return
+  fi
+
+  merged="$(mktemp)"
+  "$py" - "$src" "$dest" > "$merged" <<'EOF'
+import json, re, sys, tomllib
+
+src_path, dest_path = sys.argv[1], sys.argv[2]
+with open(src_path, "rb") as f:
+    src = tomllib.load(f)
+with open(dest_path, "rb") as f:
+    dest = tomllib.load(f)
+with open(dest_path) as f:
+    lines = f.read().splitlines()
+
+def val(v):
+    if isinstance(v, bool): return "true" if v else "false"
+    if isinstance(v, (int, float)): return repr(v)
+    if isinstance(v, str): return json.dumps(v, ensure_ascii=False)
+    if isinstance(v, list): return "[" + ", ".join(val(x) for x in v) + "]"
+    if isinstance(v, dict): return "{ " + ", ".join(f"{key(k)} = {val(x)}" for k, x in v.items()) + " }"
+    raise SystemExit(f"unsupported TOML value: {v!r}")
+
+def key(k):
+    return k if re.fullmatch(r"[A-Za-z0-9_-]+", k) else json.dumps(k, ensure_ascii=False)
+
+# Collect missing leaf keys, grouped by the table they belong in.
+missing = {}
+def walk(s, d, path):
+    for k, v in s.items():
+        if k in d:
+            if isinstance(v, dict) and isinstance(d[k], dict):
+                walk(v, d[k], path + (k,))
+        elif isinstance(v, dict) and v:
+            walk(v, {}, path + (k,))
+        else:
+            missing.setdefault(path, []).append(f"{key(k)} = {val(v)}")
+walk(src, dest, ())
+
+# Map each [table] header line in dest to its key path.
+headers = {}
+for i, line in enumerate(lines):
+    if re.match(r"\s*\[[^\[]", line):
+        try:
+            t = tomllib.loads(line)
+        except tomllib.TOMLDecodeError:
+            continue
+        path = ()
+        while isinstance(t, dict) and len(t) == 1:
+            (k, t), = t.items()
+            path += (k,)
+        headers.setdefault(path, i)
+
+inserts, appends = {}, []
+for path, kv in missing.items():
+    if path == ():
+        # Top-level keys must come before the first table header.
+        at = min(headers.values(), default=len(lines))
+        while at > 0 and not lines[at - 1].strip():
+            at -= 1
+        inserts.setdefault(at, []).extend(kv)
+    elif path in headers:
+        inserts.setdefault(headers[path] + 1, []).extend(kv)
+    else:
+        appends += ["", "[" + ".".join(key(k) for k in path) + "]", *kv]
+
+out = []
+for i, line in enumerate(lines + [None]):
+    out += inserts.get(i, [])
+    if line is not None:
+        out.append(line)
+out += appends
+text = "\n".join(out) + "\n"
+
+# Sanity check: result parses and every src key is now present.
+result = tomllib.loads(text)
+def check(s, d):
+    for k, v in s.items():
+        assert k in d, k
+        if isinstance(v, dict) and isinstance(d[k], dict):
+            check(v, d[k])
+check(src, result)
+sys.stdout.write(text if missing else open(dest_path).read())
+EOF
+
+  if cmp -s "$dest" "$merged"; then
+    echo "unchanged $dest"
+  else
+    install_file "$merged" "$dest"
+  fi
+  rm -f "$merged"
+}
+
 for f in $FILES; do
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
@@ -85,6 +199,7 @@ for agent in claude codex; do
   find . -type f ! -name .DS_Store | while IFS= read -r f; do
     case "$agent/${f#./}" in
       claude/settings.json) merge_json_defaults "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
+      codex/config.toml) merge_toml_defaults "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
       *) install_file "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
     esac
   done

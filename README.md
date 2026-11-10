@@ -104,8 +104,6 @@ the key and run `install.sh` again.
 
 `codex/` mirrors `~/.codex/` — `install.sh` copies every file in it:
 
-- `AGENTS.md` — user-level instructions, including creating Git worktrees in
-  `<repo folder>/.codex/worktrees/<worktree-name>` under the primary checkout.
 - `config.toml` — portable settings: full access, no approval prompts, and no alternate screen.
 - `skills/` — Codex versions of all ten Claude skills: `$eli5`, `$handoff`,
   `$id`, `$qq`, `$screenshot`, `$ponytail`, `$ponytail-review`,
@@ -114,15 +112,18 @@ the key and run `install.sh` again.
   applies only to the request where it is invoked.
 
 Edit the files in `codex/` here and run `./install.sh` on each machine after
-pulling the repo. Start a new Codex session to load updated settings and instructions.
+pulling the repo. Start a new Codex session to load updated settings and skills.
 The installer currently targets the default `~/.codex` location; a custom
-`CODEX_HOME` needs the instructions installed there instead.
+`CODEX_HOME` needs the files installed there instead.
 
-`AGENTS.md` guides agent behavior; it does not configure the desktop app's
-managed worktree location. `config.toml` sets `approval_policy = "never"`,
+`config.toml` sets `approval_policy = "never"`,
 `sandbox_mode = "danger-full-access"`, and `tui.alternate_screen = "never"`.
 
-The installer asks before replacing an existing `~/.codex/config.toml` and
-copies the whole file, without merging. Review any local settings you want to
-retain before accepting the replacement. Keep credentials, session history,
+`config.toml` is merged the same way as Claude's `settings.json`: `install.sh`
+adds only the keys missing from `~/.codex/config.toml` (under the existing
+`[table]` header, or in a new one at the end) and leaves everything else,
+comments and formatting included, as it is. Values you set locally, plus the
+project trust entries and model choices Codex writes there, are kept. The merge
+needs `python3` 3.11+ (`tomllib`); with an older Python the installer falls back
+to asking whether to replace the whole file. Keep credentials, session history,
 and machine-specific project trust entries out of this repo.
