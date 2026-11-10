@@ -47,6 +47,19 @@ install_file() {
   echo "copied  $dest"
 }
 
+# write_merged <merged> <dest>
+# Write a merge result over dest without asking: a merge only adds keys, so
+# nothing local is lost. The diff shows what was added.
+write_merged() {
+  merged="$1"
+  dest="$2"
+
+  diff -u "$dest" "$merged" || [ "$?" -eq 1 ]
+  [ -L "$dest" ] && rm -f "$dest"  # don't write through an old symlink
+  cat "$merged" > "$dest"          # keeps dest's permissions
+  echo "merged  $dest"
+}
+
 # merge_json_defaults <src> <dest>
 # Fill keys missing from dest with values from src, recursing into objects.
 # Keys dest already has (including arrays) are kept as-is, so the repo file
@@ -75,7 +88,7 @@ merge_json_defaults() {
   if [ "$(jq -S . "$dest")" = "$(jq -S . "$merged")" ]; then
     echo "unchanged $dest"
   else
-    install_file "$merged" "$dest"
+    write_merged "$merged" "$dest"
   fi
   rm -f "$merged"
 }
@@ -189,9 +202,15 @@ EOF
   if cmp -s "$dest" "$merged"; then
     echo "unchanged $dest"
   else
-    install_file "$merged" "$dest"
+    write_merged "$merged" "$dest"
   fi
   rm -f "$merged"
+}
+
+# installed <cmd>: true if cmd is on PATH. Files for a tool that isn't
+# installed are skipped.
+installed() {
+  command -v "$1" >/dev/null 2>&1
 }
 
 # clone_if_missing <repo-url> <dest-dir>
@@ -205,12 +224,25 @@ clone_if_missing() {
 }
 
 for f in $FILES; do
+  case "$f" in
+    .z*) tool=zsh ;;
+    .vimrc) tool=vim ;;
+    .tmux.conf) tool=tmux ;;
+  esac
+  if ! installed "$tool"; then
+    echo "skipped $HOME/$f ($tool not installed)"
+    continue
+  fi
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
 
 # Agent config: claude/ and codex/ mirror ~/.claude/ and ~/.codex/, or
 # $CLAUDE_CONFIG_DIR / $CODEX_HOME when set (e.g. CLAUDE_CONFIG_DIR=~/.claudef).
 for agent in claude codex; do
+  if ! installed "$agent"; then
+    echo "skipped $agent config ($agent not installed)"
+    continue
+  fi
   case "$agent" in
     claude) target="${CLAUDE_CONFIG_DIR:-$HOME/.claude}" ;;
     codex) target="${CODEX_HOME:-$HOME/.codex}" ;;
@@ -231,7 +263,7 @@ done
 # exits 1 if anything in .vimrc errored while the plugins were still missing,
 # even when the install itself succeeded, so check for the plugin directories
 # instead of trusting the exit code.
-if command -v vim >/dev/null 2>&1; then
+if installed vim; then
   clone_if_missing https://github.com/VundleVim/Vundle.vim.git "$VUNDLE_DIR"
   vim -E -s -u "$HOME/.vimrc" -i NONE -c 'PluginInstall' -c 'qall' </dev/null >/dev/null || true
   missing=$(sed -n "s|^Plugin '[^/']*/\([^']*\)'.*|\1|p" "$HOME/.vimrc" |
@@ -255,7 +287,7 @@ fi
 # URLs, which make git consult the credential helper, and on macOS the keychain
 # helper can block waiting for user input. Clear it and disable prompts so the
 # install stays non-interactive.
-if command -v tmux >/dev/null 2>&1; then
+if installed tmux; then
   clone_if_missing https://github.com/tmux-plugins/tpm "$TPM_DIR"
   tmux_tmpdir="$(mktemp -d)"
   env -u TMUX TMUX_TMPDIR="$tmux_tmpdir" tmux new-session -d -s dotfiles-install

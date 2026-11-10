@@ -19,7 +19,9 @@ This copies the shell, vim, and tmux dotfiles into `~`, the Claude Code
 config into `~/.claude`, and the Codex config into `~/.codex`. It then clones
 the vim and tmux plugin managers (Vundle and tpm) if they are missing and
 installs the plugins declared in `.vimrc` and `.tmux.conf`, all without opening
-vim or tmux. To update your home copies after editing anything in the repo,
+vim or tmux. Files and plugins for `zsh`, `vim`, `tmux`, `claude`, or `codex`
+are skipped when that command isn't on your `PATH`; install the tool and rerun
+to pick them up. To update your home copies after editing anything in the repo,
 just run `./install.sh` again.
 
 ## Zsh
@@ -108,7 +110,9 @@ they work on any machine.
 the keys missing from `~/.claude/settings.json`, recursing into objects. A key
 the installed file already sets, including any array such as a hook list or
 `permissions.allow`, is left alone. So the repo values are defaults, and local
-changes (from `/config`, `/model`, plugins, etc.) are kept. To change a value
+changes (from `/config`, `/model`, plugins, etc.) are kept. Since nothing
+local is lost, the merge is written without asking; the diff of added keys is
+printed. To change a value
 that is already set locally, edit `~/.claude/settings.json` directly or delete
 the key and run `install.sh` again.
 
