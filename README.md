@@ -89,6 +89,13 @@ add `claude/CLAUDE.md` here; the installer will copy it automatically.
 Project settings live in `.claude/settings.json`; personal project overrides
 live in `.claude/settings.local.json`.
 
+The installer targets `~/.claude`, or `$CLAUDE_CONFIG_DIR` when set. To
+install into a second config dir (e.g. the `claudef` alias's `~/.claudef`):
+
+```
+CLAUDE_CONFIG_DIR=~/.claudef ./install.sh
+```
+
 Paths in `settings.json` use `~/.claude/...`, never an absolute home dir, so
 they work on any machine.
 
@@ -113,8 +120,7 @@ the key and run `install.sh` again.
 
 Edit the files in `codex/` here and run `./install.sh` on each machine after
 pulling the repo. Start a new Codex session to load updated settings and skills.
-The installer currently targets the default `~/.codex` location; a custom
-`CODEX_HOME` needs the files installed there instead.
+The installer targets `~/.codex`, or `$CODEX_HOME` when set.
 
 `config.toml` sets `approval_policy = "never"`,
 `sandbox_mode = "danger-full-access"`, and `tui.alternate_screen = "never"`.

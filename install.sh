@@ -193,14 +193,20 @@ for f in $FILES; do
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
 
-# Agent config: claude/ and codex/ mirror ~/.claude/ and ~/.codex/.
+# Agent config: claude/ and codex/ mirror ~/.claude/ and ~/.codex/, or
+# $CLAUDE_CONFIG_DIR / $CODEX_HOME when set (e.g. CLAUDE_CONFIG_DIR=~/.claudef).
 for agent in claude codex; do
+  case "$agent" in
+    claude) target="${CLAUDE_CONFIG_DIR:-$HOME/.claude}" ;;
+    codex) target="${CODEX_HOME:-$HOME/.codex}" ;;
+  esac
   cd "$DOTFILES_DIR/$agent"
   find . -type f ! -name .DS_Store | while IFS= read -r f; do
-    case "$agent/${f#./}" in
-      claude/settings.json) merge_json_defaults "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
-      codex/config.toml) merge_toml_defaults "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
-      *) install_file "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
+    f="${f#./}"
+    case "$agent/$f" in
+      claude/settings.json) merge_json_defaults "$DOTFILES_DIR/$agent/$f" "$target/$f" ;;
+      codex/config.toml) merge_toml_defaults "$DOTFILES_DIR/$agent/$f" "$target/$f" ;;
+      *) install_file "$DOTFILES_DIR/$agent/$f" "$target/$f" ;;
     esac
   done
 done
