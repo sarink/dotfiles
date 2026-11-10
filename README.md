@@ -92,14 +92,13 @@ live in `.claude/settings.local.json`.
 Paths in `settings.json` use `~/.claude/...`, never an absolute home dir, so
 they work on any machine.
 
-Claude Code also writes to `~/.claude/settings.json` itself (most `/config`
-options, the `/model` default). Copy anything you want to keep back into the
-repo before running `install.sh` — answering `y` replaces the file:
-
-```
-diff ~/.claude/settings.json claude/settings.json
-cp ~/.claude/settings.json claude/settings.json
-```
+`settings.json` is merged, not copied: `install.sh` (using `jq`) adds only
+the keys missing from `~/.claude/settings.json`, recursing into objects. A key
+the installed file already sets, including any array such as a hook list or
+`permissions.allow`, is left alone. So the repo values are defaults, and local
+changes (from `/config`, `/model`, plugins, etc.) are kept. To change a value
+that is already set locally, edit `~/.claude/settings.json` directly or delete
+the key and run `install.sh` again.
 
 ## Codex
 

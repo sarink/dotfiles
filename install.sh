@@ -42,6 +42,39 @@ install_file() {
   echo "copied  $dest"
 }
 
+# merge_json_defaults <src> <dest>
+# Fill keys missing from dest with values from src, recursing into objects.
+# Keys dest already has (including arrays) are kept as-is, so the repo file
+# acts as defaults and never clobbers local settings.
+merge_json_defaults() {
+  src="$1"
+  dest="$2"
+
+  if [ ! -f "$dest" ]; then
+    install_file "$src" "$dest"
+    return
+  fi
+
+  merged="$(mktemp)"
+  jq --slurpfile d "$src" '
+    def defaults($d):
+      reduce ($d | keys_unsorted[]) as $k (.;
+        if has($k) then
+          if (.[$k] | type) == "object" and ($d[$k] | type) == "object"
+          then .[$k] |= defaults($d[$k]) else . end
+        else .[$k] = $d[$k] end);
+    defaults($d[0])
+  ' "$dest" > "$merged"
+
+  # jq reformats; compare semantically so formatting alone isn't a change.
+  if [ "$(jq -S . "$dest")" = "$(jq -S . "$merged")" ]; then
+    echo "unchanged $dest"
+  else
+    install_file "$merged" "$dest"
+  fi
+  rm -f "$merged"
+}
+
 for f in $FILES; do
   install_file "$DOTFILES_DIR/$f" "$HOME/$f"
 done
@@ -50,6 +83,9 @@ done
 for agent in claude codex; do
   cd "$DOTFILES_DIR/$agent"
   find . -type f ! -name .DS_Store | while IFS= read -r f; do
-    install_file "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}"
+    case "$agent/${f#./}" in
+      claude/settings.json) merge_json_defaults "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
+      *) install_file "$DOTFILES_DIR/$agent/${f#./}" "$HOME/.$agent/${f#./}" ;;
+    esac
   done
 done
