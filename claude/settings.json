@@ -31,5 +31,8 @@
   "editorMode": "vim",
   "autoCompactEnabled": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "claude-opus-5-5",
+  "effortLevel": "xhigh",
+  "autoCompactWindow": 900000
 }
